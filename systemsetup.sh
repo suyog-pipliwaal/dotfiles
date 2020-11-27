@@ -17,6 +17,8 @@ package_list=(
     "vim"
     "curl"
     "gnome-tweaks"
+    "nodejs"
+    "npm"
 )
 
 function install_chrome () {
