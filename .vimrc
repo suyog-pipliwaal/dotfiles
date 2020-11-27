@@ -14,11 +14,10 @@
  set undofile
  set incsearch
  set hlsearch
-  
- 
  call plug#begin('~/.vim/plugged')
  Plug 'davidhalter/jedi-vim'
  Plug 'morhetz/gruvbox'
+ Plug 'pangloss/vim-javascript'
  call plug#end()
 
 
@@ -28,5 +27,9 @@
  if executable('rg')
      let g:rg_drive_root='true'
 endif
+
+
+let g:javascript_plugin_jsdoc = 1
+let g:javascript_plugin_ngdoc = 1
 
 
