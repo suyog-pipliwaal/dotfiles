@@ -1,77 +1,36 @@
-home="$HOME"
-base_dir="$home/dotfiles"
-backup_dir="$home/dotfiles/backup"
+# Install required pakcages
+echo 'Installing required apt packages...'
+sudo apt install -y curl git wget vim
 
-# don't include all of .vim, it winds up re-downloading plugins if you do it
-# that way.
-include=(
+# Switch to home dir and copy .vimrc
+echo 'Setting vimrc...'
+mv ./vimrc .vimrc
 
-    .bashrc
-    .vimrc
-)
+# Switch to home dir and copy .eslintrc.json
+echo 'Downloading eslintrc...'
+cd $HOME
+wget https://gist.githubusercontent.com/aqual3o/b44d5a3bd66294cd2047ec617bc00922/raw/cf6766b5d2275182fd3add47d6422787315d5477/.eslintrc.json
 
-if [[ $(which vim) ]]; then
-    echo "vim is install"
-else
-    echo "installing vim"
-    sudo apt install vim -y
-fi
+# Install vundle
+echo 'Setting up vundle...'
+cd $HOME
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
-if [[ -d "$backup_dir" ]] ; then
-    echo "removing previous backup at $backup_dir"
-    rm -rf "$backup_dir"
-fi
+# Install colorschemes (base-16)
+echo 'Installing vim colorschemes...'
+cd $HOME
+git clone https://github.com/chriskempson/base16-vim.git
+mkdir -p $HOME/.vim/colors
+mv $HOME/base16-vim/colors/* $HOME/.vim/colors/
+rm -rf $HOME/base16-vim
 
-echo "backing up existing dotfiles into $backup_dir"
-mkdir -p "$backup_dir"
-for filename in ${include[@]}; do
-    source_path="$base_dir/$filename"
-    dest_path="$home/$filename"
-    backup_path="$backup_dir/$filename"
-    echo "file name:   $filename"
-    echo "source path: $source_path"
-    echo "dest path:   $dest_path"
-    echo "backup path: $backup_path"
+# Install linting modules
+echo 'Installing linting helper packages...'
+cd $HOME
+npm install -g eslint_d
+npm install eslint babel-eslint eslint-plugin-react
 
-    # if a file doesn't actually exist in the repo, do nothing.
-    if [[ ! -a "$source_path" ]]; then
-        echo "no file found at source path $source_path, skipping"
-        continue
-    fi
-
-    # back up existing dotfiles, just for safety
-    if [[ -a "$dest_path" ]]; then
-        if [[ -h "$dest_path" ]]; then
-            # existing file is a symlink. delete it.
-            echo "removing old link at $dest_path"
-            rm "$dest_path"
-        else
-            # existing file is an original preferences file. archive it.
-            echo "archiving existing preferences file at $dest_path"
-            if [[ ! -d $(dirname "$backup_path") ]]; then
-                mkdir -pv $(dirname "$backup_path")
-            fi
-            mv -v "$dest_path" "$backup_path"
-        fi
-    fi
-
-    if [[ ! -d $(dirname "$dest_path") ]]; then
-        mkdir -p $(dirname "$dest_path")
-    fi
-
-    # symlink in the versioned dotfiles.
-    ln -sv "$source_path" "$dest_path"
-    echo "--------------------------------------------------------------------------------"
-done
-
-if [[ ! -d "$vim_plugins_dir" ]]; then
-    mkdir -p "$vim_plugins_dir"
-fi
-
-# setup Vundle
-    echo "setup vim-plug cloning vim-plug"
-    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-echo "installing Vim plugins"
-vim +PlugInstall +qall
+# Install vundle plugins from vimrc
+echo 'Installing vim plugins...'
+cd $HOME
+vim +PluginInstall +qall
