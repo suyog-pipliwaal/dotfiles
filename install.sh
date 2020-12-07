@@ -4,7 +4,7 @@ sudo apt install -y curl git wget vim
 
 # Switch to home dir and copy .vimrc
 echo 'Setting vimrc...'
-mv ./vimrc .vimrc
+cp vimrc $HOME/.vimrc
 
 # Switch to home dir and copy .eslintrc.json
 echo 'Downloading eslintrc...'
