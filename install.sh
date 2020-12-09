@@ -7,9 +7,8 @@ echo 'Setting vimrc...'
 cp vimrc $HOME/.vimrc
 
 # Switch to home dir and copy .eslintrc.json
-echo 'Downloading eslintrc...'
-cd $HOME
-wget https://gist.githubusercontent.com/aqual3o/b44d5a3bd66294cd2047ec617bc00922/raw/cf6766b5d2275182fd3add47d6422787315d5477/.eslintrc.json
+echo 'Setting eslintrc...'
+cp .eslintrc.json $HOME/.eslintrc.json
 
 # Install vundle
 echo 'Setting up vundle...'
