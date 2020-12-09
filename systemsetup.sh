@@ -19,6 +19,7 @@ package_list=(
     "gnome-tweaks"
     "nodejs"
     "npm"
+	"wget"
 )
 
 function install_chrome () {

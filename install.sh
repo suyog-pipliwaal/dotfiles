@@ -1,6 +1,3 @@
-# Install required pakcages
-echo 'Installing required apt packages...'
-sudo apt install -y curl git wget vim
 
 # Switch to home dir and copy .vimrc
 echo 'Setting vimrc...'
